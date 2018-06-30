@@ -8,6 +8,17 @@ namespace KeyLogger
 {
     public static class StreamHelper
     {
+        public static byte[] ReadPacket(this Stream stream, int size)
+        {
+            var buffer = new byte[size];
+            int receivedBytes = 0;
+            while (receivedBytes < size)
+            {
+                receivedBytes += stream.Read(buffer, receivedBytes, size - receivedBytes);
+            }
+            return buffer;
+        }
+
         public static byte[] ReadPacket(this Stream stream, int size, TimeSpan timeout)
         {
             int oldTimeout = -1;
