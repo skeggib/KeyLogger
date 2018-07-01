@@ -42,5 +42,22 @@ namespace KeyLogger
             stream.Write(packet, 0, packet.Length);
             stream.Flush();
         }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            builder.Append("[ ");
+            if (!(Data is null))
+            {
+                for (int i = 0; i < Data.Length; ++i)
+                {
+                    if (i == 0)
+                        builder.Append(", ");
+                    builder.Append(Data[i]);
+                }
+            }
+            builder.Append(" ]");
+            return builder.ToString();
+        }
     }
 }

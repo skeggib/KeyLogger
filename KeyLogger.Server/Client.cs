@@ -1,4 +1,5 @@
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace KeyLogger.Server
 {
@@ -10,5 +11,7 @@ namespace KeyLogger.Server
         {
             TcpClient = tcpClient;
         }
+
+        public abstract Task Run();
     }
 }

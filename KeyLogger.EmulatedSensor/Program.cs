@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
-namespace KeyLogger.ConsoleListener
+namespace KeyLogger.EmulatedSensor
 {
     class Program
     {
@@ -20,7 +21,7 @@ namespace KeyLogger.ConsoleListener
                 Console.WriteLine($"Usage: dotnet run KeyLogger.dll <hostname|ip>:<port>");
                 return;
             }
-            
+
             int port = 10000;
             if (split.Length >= 2)
             {
@@ -36,16 +37,16 @@ namespace KeyLogger.ConsoleListener
             }
 
             var endPoint = new DnsEndPoint(split[0], port);
-            
+
             var client = new TcpClient(endPoint.Host, endPoint.Port);
             var stream = client.GetStream();
-            new ClientConnectionMessage(ClientType.Listener).Send(stream);
+            new ClientConnectionMessage(ClientType.Sensor).Send(stream);
 
+            var rand = new Random();
             while (true)
             {
-                var message = new DataMessage();
-                message.Receive(stream);
-                Console.WriteLine(message);
+                new DataMessage(new float[] { (float)rand.NextDouble() }).Send(stream);
+                Thread.Sleep(1000);
             }
         }
     }
