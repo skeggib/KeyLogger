@@ -1,3 +1,3 @@
 # KeyLogger
 
-KeyLogging using android sensors.
+Key logging using android sensors.
