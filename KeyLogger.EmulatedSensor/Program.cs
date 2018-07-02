@@ -40,7 +40,7 @@ namespace KeyLogger.EmulatedSensor
 
             var client = new TcpClient(endPoint.Host, endPoint.Port);
             var stream = client.GetStream();
-            new ClientConnectionMessage(ClientType.Sensor).Send(stream);
+            new ConnectionMessage(ClientType.Sensor).Send(stream);
 
             var rand = new Random();
             while (true)

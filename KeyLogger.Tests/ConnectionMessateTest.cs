@@ -6,14 +6,14 @@ using System.IO;
 namespace KeyLogger.Tests
 {
     [TestClass]
-    public class ClientConnectionMessageTest
+    public class ConnectionMessageTest
     {
         [TestMethod]
         public void Send_Listener()
         {
             using (var stream = new MemoryStream())
             {
-                var message = new ClientConnectionMessage(ClientType.Listener);
+                var message = new ConnectionMessage(ClientType.Listener);
                 message.Send(stream);
                 stream.Seek(0, SeekOrigin.Begin);
                 var reader = new StreamReader(stream);
@@ -27,7 +27,7 @@ namespace KeyLogger.Tests
         {
             using (var stream = new MemoryStream())
             {
-                var message = new ClientConnectionMessage(ClientType.Sensor);
+                var message = new ConnectionMessage(ClientType.Sensor);
                 message.Send(stream);
                 stream.Seek(0, SeekOrigin.Begin);
                 var reader = new StreamReader(stream);
@@ -45,7 +45,7 @@ namespace KeyLogger.Tests
                 writer.Write("connect listener\n");
                 writer.Flush();
                 stream.Seek(0, SeekOrigin.Begin);
-                var message = new ClientConnectionMessage();
+                var message = new ConnectionMessage();
                 message.Receive(stream);
                 Assert.AreEqual(message.Type, ClientType.Listener);
             }
@@ -60,7 +60,7 @@ namespace KeyLogger.Tests
                 writer.Write("connect sensor\n");
                 writer.Flush();
                 stream.Seek(0, SeekOrigin.Begin);
-                var message = new ClientConnectionMessage();
+                var message = new ConnectionMessage();
                 message.Receive(stream);
                 Assert.AreEqual(message.Type, ClientType.Sensor);
             }
@@ -71,7 +71,7 @@ namespace KeyLogger.Tests
         {
             using (var stream = new MemoryStream())
             {
-                var message = new ClientConnectionMessage();
+                var message = new ConnectionMessage();
                 try
                 {
                     message.Send(stream);
@@ -90,7 +90,7 @@ namespace KeyLogger.Tests
                 writer.Write("invalid listener\n");
                 writer.Flush();
                 stream.Seek(0, SeekOrigin.Begin);
-                var message = new ClientConnectionMessage();
+                var message = new ConnectionMessage();
                 try
                 {
                     message.Receive(stream);
@@ -109,7 +109,7 @@ namespace KeyLogger.Tests
                 writer.Write("connect invalid\n");
                 writer.Flush();
                 stream.Seek(0, SeekOrigin.Begin);
-                var message = new ClientConnectionMessage();
+                var message = new ConnectionMessage();
                 try
                 {
                     message.Receive(stream);
@@ -128,7 +128,7 @@ namespace KeyLogger.Tests
                 writer.Write("connect\n");
                 writer.Flush();
                 stream.Seek(0, SeekOrigin.Begin);
-                var message = new ClientConnectionMessage();
+                var message = new ConnectionMessage();
                 try
                 {
                     message.Receive(stream);
@@ -147,7 +147,7 @@ namespace KeyLogger.Tests
                 writer.Write("connect sensor unwanted\n");
                 writer.Flush();
                 stream.Seek(0, SeekOrigin.Begin);
-                var message = new ClientConnectionMessage();
+                var message = new ConnectionMessage();
                 try
                 {
                     message.Receive(stream);

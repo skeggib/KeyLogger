@@ -32,7 +32,7 @@ namespace KeyLogger.Server
                 try
                 {
                     
-                    var message = new ClientConnectionMessage();
+                    var message = new ConnectionMessage();
                     message.Receive(tcpClient.GetStream());
                     var client = factory.CreateClient(tcpClient, message.Type.Value);
                     Console.WriteLine($"connected: {client.ToString()}");
