@@ -11,14 +11,14 @@ namespace KeyLogger.EmulatedSensor
         {
             if (args.Length != 1)
             {
-                Console.WriteLine($"Usage: dotnet run KeyLogger.dll <hostname|ip>[:<port>]");
+                Console.WriteLine($"Usage: dotnet run KeyLogger.EmulatedSensor.dll <ip>[:<port>]");
                 return;
             }
 
             var split = args[0].Split(':');
             if (split.Length < 1)
             {
-                Console.WriteLine($"Usage: dotnet run KeyLogger.dll <hostname|ip>:<port>");
+                Console.WriteLine($"Usage: dotnet run KeyLogger.EmulatedSensor.dll <ip>:<port>");
                 return;
             }
 
@@ -45,8 +45,8 @@ namespace KeyLogger.EmulatedSensor
             var rand = new Random();
             while (true)
             {
-                new DataMessage(new float[] { (float)rand.NextDouble() }).Send(stream);
-                Thread.Sleep(1000);
+                new DataMessage(new float[] { (float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble() }).Send(stream);
+                Thread.Sleep(10);
             }
         }
     }

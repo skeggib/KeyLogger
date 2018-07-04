@@ -11,14 +11,14 @@ namespace KeyLogger.ConsoleListener
         {
             if (args.Length != 1)
             {
-                Console.WriteLine($"Usage: dotnet run KeyLogger.dll <hostname|ip>[:<port>]");
+                Console.WriteLine($"Usage: dotnet run KeyLogger.ConsoleListener.dll <hostname|ip>[:<port>]");
                 return;
             }
 
             var split = args[0].Split(':');
             if (split.Length < 1)
             {
-                Console.WriteLine($"Usage: dotnet run KeyLogger.dll <hostname|ip>:<port>");
+                Console.WriteLine($"Usage: dotnet run KeyLogger.ConsoleListener.dll <hostname|ip>:<port>");
                 return;
             }
             
