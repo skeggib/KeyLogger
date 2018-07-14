@@ -2,6 +2,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using KeyLogger.Clients;
+using KeyLogger.Protocol;
 
 namespace KeyLogger.EmulatedSensor
 {
@@ -42,11 +44,15 @@ namespace KeyLogger.EmulatedSensor
             var stream = client.GetStream();
             new ConnectionMessage(ClientType.Sensor).Send(stream);
 
+            Console.WriteLine("Connected");
+
             var rand = new Random();
             while (true)
             {
+                Console.Write("Sending... ");
                 new DataMessage(new float[] { (float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble() }).Send(stream);
-                Thread.Sleep(10);
+                Console.WriteLine("done");
+                Thread.Sleep(1000);
             }
         }
     }

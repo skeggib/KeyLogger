@@ -2,11 +2,13 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using KeyLogger.Protocol;
 
 namespace KeyLogger.Server
 {
     public class ListenerClient : Client
     {
+        private bool _run;
         private Queue<float[]> _dataQueue;
 
         public ListenerClient(TcpClient tcpClient)
@@ -19,10 +21,15 @@ namespace KeyLogger.Server
         {
             return Task.Run(() =>
             {
-                while (true)
+                Console.WriteLine("[Listener] Started");
+                _run = true;
+                while (_run)
                 {
                     if (_dataQueue.Count > 0)
+                    {
+                        Console.WriteLine("[Listener] Sending data");
                         new DataMessage(_dataQueue.Dequeue()).Send(TcpClient.GetStream());
+                    }
                 }
             });
         }
@@ -30,6 +37,11 @@ namespace KeyLogger.Server
         public void Send(float[] data)
         {
             _dataQueue.Enqueue(data);
+        }
+
+        public void Close()
+        {
+            _run = false;
         }
 
         public override string ToString()

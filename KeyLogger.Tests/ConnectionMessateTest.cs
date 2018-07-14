@@ -1,3 +1,5 @@
+using KeyLogger.Clients;
+using KeyLogger.Protocol;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System;
@@ -8,6 +10,13 @@ namespace KeyLogger.Tests
     [TestClass]
     public class ConnectionMessageTest
     {
+        [TestMethod]
+        public void IMessage()
+        {
+            IMessageTestHelper.Test_All(new ConnectionMessage(ClientType.Listener));
+            IMessageTestHelper.Test_All(new ConnectionMessage(ClientType.Sensor));
+        }
+
         [TestMethod]
         public void Send_Listener()
         {

