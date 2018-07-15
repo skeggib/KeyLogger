@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeyLogger.Protocol;
 using System;
 
-namespace KeyLogger.Tests
+namespace KeyLogger.Tests.Protocol
 {
     public static class IMessageTestHelper
     {
